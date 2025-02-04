@@ -50,12 +50,12 @@ The Summation of Normal Least Squares method is applied as an alternative to bat
 ![Residuals from Summation of Normal Least Squares](results/residual_from_SONs.png)
 
 ### 4. **Sequential Least Squares (SLs)**
-This method processes the data sequentially, updating the position estimate after each epoch. However, as shown in the residuals plot, the method struggles to accurately track the user's movement after the 50th epoch, when the user begins to move.
+This method processes the data sequentially, updating the position estimate after each epoch. However, as shown in the residuals plot, the method struggles to accurately track the user's movement after the 50th epoch, when the user begins to move(because there is no dynamic model in SLs).
 
 ![Residuals from Sequential Least Squares](results/residuals_from_SLs.png)
 
 ### 5. **Effect of Process Noise Q on Kalman Filter Solution**
-This experiment shows how different values of process noise (Q) affect the Kalman filter's ability to track the user's position. Smaller values of Q provide smoother estimates, while larger values allow for more responsiveness to changes in the system.
+This experiment shows how different values of process noise (Q) affect the Kalman filter's ability to track the user's position. Smaller values of Q provide smoother estimates(it relies so much on the prior estimate), while larger values allow for more responsiveness to changes in the system(which is real life).
 
 ![Effect of Process Noise Q on Kalman Filter Solution](results/process_noise_effct_KF.png)
 
