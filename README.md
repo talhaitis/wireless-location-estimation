@@ -5,6 +5,8 @@ This repository contains the implementation of various estimation techniques use
 
 The lab uses **Time of Arrival (TOA)** range measurements to fixed targets for both stationary and moving user cases. The first 50 epochs represent stationary data, and after that, the user begins to move. Kalman filtering is applied to dynamically handle the moving user data, while the sequential least squares method is used for comparison.
 
+The identification of stationary epochs was based on the observation that the position estimates for the first 50 epochs remained relatively constant. This allowed for a distinction between stationary data (where the user was not moving) and the subsequent moving data (where the position estimates changed over time). The **Kalman filter** was particularly useful for handling this dynamic data and improving position estimation as the user started moving after the first 50 epochs.
+
 ## Lab Objectives
 - Review non-linear least-squares estimation techniques.
 - Implement sequential least-squares and a basic Kalman filter.
@@ -32,38 +34,39 @@ The lab uses **Time of Arrival (TOA)** range measurements to fixed targets for b
 
 ## Results
 
-### 1. **Estimated Position Using Kalman Filter**
-This graph shows the estimated position of the user using the Kalman filter, incorporating a velocity model to track the position over time, particularly helpful during the dynamic motion phase.
+### 1. **Parametric Least Squares**
+This method estimates the user's position based on range measurements from multiple targets using a non-linear least-squares approach. The user is initially stationary, and this method calculates the position for each epoch.
 
-![Estimated Position using Kalman Filter](results/estimated_position_EKF.png)
+![X and Y Coordinates Over Time from Parametric Least Squares](results/positions_per_epoch.png)
 
-### 2. **X and Y Coordinates Over Time from Parametric Least Squares**
-This plot shows the position estimation over time using **parametric least squares**. The user starts stationary and then moves after the 50th epoch, highlighting how the parametric method struggles with dynamic data after the user starts moving.
-
-![X and Y Coordinates Over Time](results/positions_per_epoch.png)
-
-### 3. **Effect of Process Noise Q on Kalman Filter Solution**
-The effect of varying the process noise (Q) on the Kalman filter is demonstrated. The plot illustrates the position estimates under different levels of noise (Q = 0, 0.1, and 10). This experiment helps to see how noise affects the filter’s performance.
-
-![Effect of Process Noise Q on Kalman Filter Solution](results/process_noise_effct_KF.png)
-
-### 4. **Residuals from Batch Least Squares (BLS)**
-This graph shows the residuals of range measurements after applying **Batch Least Squares** to the stationary data. The residuals are fairly consistent, with small errors as expected.
+### 2. **Batch Least Squares (BLS)**
+In this approach, batch parametric least squares is applied to a set of measurements from stationary data to compute a more precise position estimate. The residuals for the range measurements are also analyzed to assess the accuracy of the batch solution.
 
 ![Residuals from Batch Least Squares](results/residual_from_BLS.png)
 
-### 5. **Residuals from Summation of Normal Least Squares (SONs)**
-The residuals from **Summation of Normal Least Squares** show how this method compares to batch least squares in terms of residuals. Similar to BLS, the results are relatively stable but can still show some variation.
+### 3. **Summation of Normal Least Squares (SONs)**
+The Summation of Normal Least Squares method is applied as an alternative to batch least squares. It involves accumulating the normal equations over multiple epochs and then solving for the final position estimate.
 
 ![Residuals from Summation of Normal Least Squares](results/residual_from_SONs.png)
 
-### 6. **Residuals from Sequential Least Squares (SLs)**
-This plot shows how **Sequential Least Squares** performs with dynamic data. The residuals increase after the 50th epoch, when the user begins moving, indicating that this method is not as effective in tracking the user’s movement.
+### 4. **Sequential Least Squares (SLs)**
+This method processes the data sequentially, updating the position estimate after each epoch. However, as shown in the residuals plot, the method struggles to accurately track the user's movement after the 50th epoch, when the user begins to move.
 
 ![Residuals from Sequential Least Squares](results/residuals_from_SLs.png)
 
-### 7. **Estimated Velocity Components Over Time**
-This graph shows the estimated **velocity components** (in the X and Y directions) using the Kalman filter with a velocity model. The velocity estimates help demonstrate the dynamic tracking capabilities of the Kalman filter compared to static methods.
+### 5. **Effect of Process Noise Q on Kalman Filter Solution**
+This experiment shows how different values of process noise (Q) affect the Kalman filter's ability to track the user's position. Smaller values of Q provide smoother estimates, while larger values allow for more responsiveness to changes in the system.
+
+![Effect of Process Noise Q on Kalman Filter Solution](results/process_noise_effct_KF.png)
+
+### 6. **Kalman Filter with Constant Velocity Model**
+The Kalman filter, with a constant velocity model, is applied to dynamically track the position of the user as they move. The filter adjusts the position estimate with each epoch, incorporating process noise and measurement uncertainty. The effect of varying the process noise (Q) is also demonstrated to show its impact on the Kalman filter solution.
+
+![Estimated Position using Kalman Filter](results/estimated_position_EKF.png)
+
+
+### 7. **Estimated Velocity Components Over Time KF**
+In addition to tracking position, the Kalman filter also estimates the velocity components in both the X and Y directions. This plot demonstrates how the filter tracks the user's velocity over time, providing insights into their movement.
 
 ![Estimated Velocity Components](results/velocity_state_KF.png)
 
